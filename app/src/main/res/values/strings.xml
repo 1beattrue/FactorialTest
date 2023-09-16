@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FactorialTest</string>
+    <string name="editTextNumber">Введите число</string>
+    <string name="buttonCalculate">Вычислить факториал</string>
 </resources>
