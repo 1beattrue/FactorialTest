@@ -1,7 +1,7 @@
 package edu.mirea.onebeattrue.factorialtest
 
-class State(
-    val isError: Boolean = false,
-    val isInProgress: Boolean = false,
-    val factorial: String = ""
-)
+sealed class State
+
+data object Error : State()
+data object Progress : State()
+class Result(val factorial: String) : State()
