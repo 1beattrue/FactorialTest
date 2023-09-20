@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
                     binding.buttonCalculate.isEnabled = false
                 }
 
-                is Result -> {
-                    binding.textViewResult.text = it.factorial
+                is Factorial -> {
+                    binding.textViewResult.text = it.value
                 }
             }
         }

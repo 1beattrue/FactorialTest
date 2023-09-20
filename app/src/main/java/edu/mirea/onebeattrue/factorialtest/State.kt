@@ -2,6 +2,6 @@ package edu.mirea.onebeattrue.factorialtest
 
 sealed class State
 
-data object Error : State() // мы делаем его data, чтобы переопределить toString()
+data object Error : State()
 data object Progress : State()
-data class Result(val factorial: String) : State()
+data class Factorial(val value: String) : State()
