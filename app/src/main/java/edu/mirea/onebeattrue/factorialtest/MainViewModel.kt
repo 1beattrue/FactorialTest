@@ -26,21 +26,22 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch {
             val number = value.toLong()
-            val result = factorial(number)
-            _state.value = Factorial(value = result.toString())
+            withContext(Dispatchers.Default) {
+                val result = factorial(number)
+                withContext(Dispatchers.Main) {
+                    _state.value = Factorial(value = result)
+                }
+            }
         }
     }
 
-    private suspend fun factorial(number: Long): String {
-        // второй вариант, используем coroutineContext для вынесения функций в отдельные потоки
-        // если не нужна функция с callback'ом, то нам это подходит идеально
-        return withContext(Dispatchers.Default) {
-            var result = BigInteger.ONE
-            for (i in 1..number) {
-                result = result.multiply(BigInteger.valueOf(i))
-            }
-            result.toString()
+    // представим, что у нас нет доступа к этой функции и мы не можем сделать ее suspend
+    private fun factorial(number: Long): String {
+        var result = BigInteger.ONE
+        for (i in 1..number) {
+            result = result.multiply(BigInteger.valueOf(i))
         }
+        return result.toString()
     }
 
 //    private suspend fun factorial(number: Long): BigInteger {
