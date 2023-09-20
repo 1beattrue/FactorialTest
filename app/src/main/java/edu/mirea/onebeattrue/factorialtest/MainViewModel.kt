@@ -26,12 +26,10 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch {
             val number = value.toLong()
-            withContext(Dispatchers.Default) {
-                val result = factorial(number)
-                withContext(Dispatchers.Main) {
-                    _state.value = Factorial(value = result)
-                }
+            val result = withContext(Dispatchers.Default) {
+                factorial(number)
             }
+            _state.value = Factorial(value = result)
         }
     }
 
