@@ -1,17 +1,22 @@
 package edu.mirea.onebeattrue.factorialtest
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigInteger
-import kotlin.concurrent.thread
-import kotlin.coroutines.suspendCoroutine
 
 class MainViewModel : ViewModel() {
+
+    private val coroutineScope = CoroutineScope(
+        Dispatchers.Main + CoroutineName("My coroutine scope")
+    )
 
     private val _state = MutableLiveData<State>()
     val state: LiveData<State>
@@ -24,12 +29,13 @@ class MainViewModel : ViewModel() {
             return
         }
 
-        viewModelScope.launch {
+        coroutineScope.launch {// в coroutine builder также можно передать coroutineContext
             val number = value.toLong()
             val result = withContext(Dispatchers.Default) {
                 factorial(number)
             }
             _state.value = Factorial(value = result)
+            Log.d("MainViewModel", coroutineContext.toString())
         }
     }
 
@@ -55,4 +61,9 @@ class MainViewModel : ViewModel() {
 //            }
 //        }
 //    }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineScope.cancel()
+    }
 }
