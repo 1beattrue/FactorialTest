@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
     }
 
     private suspend fun factorial(number: Long): String {
-        // второй вариант, используем coroutineContext для выноса функций в отдельные потоки
+        // второй вариант, используем coroutineContext для вынесения функций в отдельные потоки
         // если не нужна функция с callback'ом, то нам это подходит идеально
         return withContext(Dispatchers.Default) {
             var result = BigInteger.ONE
